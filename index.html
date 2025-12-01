@@ -1,44 +1,62 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Feliz Aniversário - AR</title>
+    <title>Feliz Aniversário - Jessica</title>
+    <meta charset="utf-8">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     
     <style>
-      /* Botão para iniciar (necessário para liberar som e video no iOS/Android) */
       .start-btn {
-        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-        padding: 15px 30px; background: #ff0055; color: white;
-        border: none; border-radius: 30px; font-size: 18px; z-index: 99999;
-        font-family: sans-serif; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+        padding: 15px 40px; background: linear-gradient(45deg, #ff0055, #ff5500); 
+        color: white; border: none; border-radius: 50px; font-size: 18px; 
+        z-index: 99999; font-family: sans-serif; font-weight: bold;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        animation: pulseBtn 2s infinite;
+      }
+      
+      @keyframes pulseBtn {
+        0% { transform: translateX(-50%) scale(1); }
+        50% { transform: translateX(-50%) scale(1.05); }
+        100% { transform: translateX(-50%) scale(1); }
       }
     </style>
   </head>
 
   <body style="margin : 0px; overflow: hidden;">
     
-    <button class="start-btn" onclick="this.style.display='none'">TOQUE AQUI PARA INICIAR</button>
+    <button class="start-btn" onclick="this.style.display='none'">❤️ ABRIR PRESENTE ❤️</button>
 
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
       
       <a-marker preset="hiro">
-          <a-box position="0 0 0" scale="1 0.1 1" material="opacity: 0.1; color: red;"></a-box>
+          <a-plane position="0 0 0" rotation="-90 0 0" width="3.5" height="2.5" color="black" opacity="0.8"></a-plane>
           
-          <a-entity position="0 0.5 0" rotation="-90 0 0" scale="2 2 2">
-            <a-plane width="3" height="1.5" color="black" opacity="0.7"></a-plane>
-            <a-text value="Feliz Aniversario\nJessica!" align="center" color="white" width="5" position="0 0 0.1"></a-text>
-            <a-text value="Voce e o meu amor!" align="center" color="yellow" width="4" position="0 -0.5 0.1"></a-text>
+          <a-entity position="0 0.5 0.5" rotation="-90 0 0">
+            <a-text value="Parabens Jessica!" align="center" color="#ff0055" width="6" position="0 0.8 0" font="exo2bold"></a-text>
+            
+            <a-text value="Voce hackeou meu coracao\ne agora tem acesso total\na minha vida!" 
+                    align="center" color="white" width="4.5" position="0 0 0" font="roboto"></a-text>
+            
+            <a-text value="(Te amo mais que Wi-Fi gratis)" align="center" color="yellow" width="3.5" position="0 -0.8 0"></a-text>
           </a-entity>
       </a-marker>
 
       <a-marker preset="kanji">
           <a-entity position="0 0.5 0" rotation="0 0 0">
-            <a-dodecahedron color="#ff0055" radius="0.5"
-              animation="property: scale; to: 1.2 1.2 1.2; dir: alternate; loop: true; dur: 800">
-            </a-dodecahedron>
             
-            <a-text value="TE AMO" align="center" color="white" width="6" position="0 1.2 0" rotation="-90 0 0"></a-text>
+            <a-text value="♥" color="#ff0000" align="center" width="25" position="0 0.5 0"
+              animation="property: scale; from: 1 1 1; to: 1.3 1.3 1.3; dir: alternate; loop: true; dur: 800; easing: easeInOutQuad">
+            </a-text>
+
+            <a-sphere radius="0.4" color="#ff0055" opacity="0.3" position="0 0.5 -0.1"
+               animation="property: radius; from: 0.4; to: 0.7; dir: alternate; loop: true; dur: 800">
+            </a-sphere>
+            
+            <a-text value="Hoje o dia e seu..." align="center" color="white" width="5" position="0 1.5 0" rotation="-90 0 0"></a-text>
+            <a-text value="MAS O PRESENTE\nE MEU!" align="center" color="#FFFF00" width="6" position="0 1.2 0.5" rotation="-45 0 0" font="exo2bold"></a-text>
+            <a-text value="(Voce e meu presente)" align="center" color="white" width="3" position="0 1.0 0.8" rotation="-45 0 0"></a-text>
           </a-entity>
       </a-marker>
 
