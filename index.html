@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     
-    <!-- Bibliotecas AR (CORRIGIDAS para links mais estáveis) -->
+    <!-- A-Frame 1.4.0 (Versão Moderna) -->
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <!-- AR.js do GITHACK (URL Padrão mais confiável para A-Frame) -->
+    <!-- AR.js para A-Frame -->
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <!-- Gesture Handler (URL Padrão mais confiável para Githack) -->
+    <!-- Gestures -->
     <script src="https://raw.githack.com/fcor/arjs-gestures/master/dist/gestures.js"></script>
 
     <style>
@@ -18,7 +18,7 @@
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0,0,0,0.9); z-index: 9999;
         display: flex; justify-content: center; align-items: center; flex-direction: column;
-        color: white; font-family: 'Inter', sans-serif; text-align: center;
+        color: white; font-family: sans-serif; text-align: center;
       }
       .btn {
         margin-top: 30px; padding: 14px 30px; background: #FF33A1; /* Rosa choque */
@@ -31,17 +31,17 @@
       }
     </style>
   </head>
+
   <body style="margin: 0; overflow: hidden;">
     
-    <!-- 1. Componente de Interação de Surpresa A-Frame -->
+    <!-- Script de Interação -->
     <script>
-      // Componente que lida com o clique/toque para gerar um efeito de vibração e mudança de cor
       AFRAME.registerComponent('surprise-interaction', {
         init: function () {
           var el = this.el;
           el.addEventListener('click', function () {
             
-            // 1. Feedback de clique/toque: Animação de escala (vibração)
+            // 1. Feedback de clique: Vibração visual
             el.setAttribute('animation__click', {
                 property: 'scale',
                 from: '1.2 1.2 1.2', 
@@ -50,21 +50,22 @@
                 dir: 'alternate',
                 startEvents: 'click' 
             });
-            setTimeout(() => el.removeAttribute('animation__click'), 300);
+            // Limpa a animação de clique após execução
+            setTimeout(() => {
+                if(el.removeAttribute) el.removeAttribute('animation__click');
+            }, 300);
             
-            // 2. Lógica de Mudança de Cor (Efeito Surpresa)
-            const newColor = '#FF33A1'; // Novo Rosa Choque
-
-            // Mudar a cor do texto
+            // 2. Mudança de Cor
+            const newColor = '#FF33A1'; 
+            
+            // Tenta mudar cor do texto ou do objeto
             const textEntity = el.querySelector('[text]');
             if (textEntity) {
                 textEntity.setAttribute('text', 'color', newColor); 
-            } else if (el.components.text) {
+            } else if (el.getAttribute('text')) {
                 el.setAttribute('text', 'color', newColor);
             }
-            
-            // Mudar a cor do objeto 3D
-            if (el.nodeName === 'A-ICOSAHEDRON') {
+            if (el.tagName === 'A-ICOSAHEDRON') {
                 el.setAttribute('color', newColor); 
             }
           });
@@ -72,10 +73,10 @@
       });
     </script>
     
-    <!-- Tela de Início (overlay) -->
+    <!-- Tela de Início -->
     <div id="overlay">
       <div style="font-size: 32px; font-weight: bold;">Surpresa AR de Aniversário!</div>
-      <div style="margin-top: 20px; font-size: 18px; color: #ccc;">Encontre os 3 Marcadores (Hiro, Kanji, Letter A) para a mensagem completa!</div>
+      <div style="margin-top: 20px; font-size: 18px; color: #ccc;">Encontre os 3 Marcadores (Hiro, Kanji, Letter A)</div>
       <div class="btn">TOQUE PARA INICIAR O AMOR</div>
     </div>
 
@@ -89,61 +90,44 @@
     >
 
       <a-assets>
-        <!-- ⚠️ MÚSICA DE FUNDO: O link direto do YouTube (Xd800esKfb8) não funciona como fonte de áudio. 
-             A música é "Soft and Soulful 🎶 60s Love Songs..." (Timeless Love).
-             Você deve encontrar ou hospedar a versão MP3/WAV e SUBSTITUIR o URL abaixo. -->
-        <audio id="music" src="https://example.com/substitua_pelo_audio_mp3_aqui.mp3" preload="auto"></audio>
+        <!-- ⚠️ Lembre-se de substituir este link por um link direto de MP3 válido -->
+        <audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto"></audio>
       </a-assets>
 
-      <!-- Toca a música após o clique no overlay (se a URL for válida) -->
       <a-sound src="#music" autoplay="true" loop="true" volume="0.5" id="background-music"></a-sound>
 
-      <!-- ---------------------------------------------------- -->
-      <!-- MARCador 1: HIRO (Frase de Abertura) -->
-      <!-- ---------------------------------------------------- -->
+      <!-- ================================================= -->
+      <!-- MARCADOR 1: HIRO -->
+      <!-- ================================================= -->
       <a-marker preset="hiro">
-      
-        <!-- 1. Frase de Abertura (Com Animação Elástica) -->
         <a-entity 
           position="0 1.2 0" 
           rotation="-90 0 0" 
           scale="0.001 0.001 0.001" 
           surprise-interaction
           gesture-handler
+          /* Animação convertida para sintaxe moderna (atributo animation) */
+          animation="property: scale; from: 0.001 0.001 0.001; to: 1.5 1.5 1.5; dur: 2500; easing: easeOutElastic; loop: false"
         >
-          <!-- Fundo semitransparente para melhorar a leitura -->
+          <!-- Fundo -->
           <a-plane 
-            width="4.5" 
-            height="1.5" 
-            color="#000000" 
-            opacity="0.6" 
-            position="0 0 -0.01" 
-            shader="standard"
-            material="metalness: 0.1; roughness: 0.8;"></a-plane>
+            width="4.5" height="1.5" color="#000000" opacity="0.6" 
+            position="0 0 -0.01" shader="standard" material="metalness: 0.1; roughness: 0.8;">
+          </a-plane>
             
-          <!-- Texto da Abertura -->
+          <!-- Texto (Aspas corrigidas: width: 4 sem aspas extras) -->
           <a-entity
-            text="value: Jessica, meu amor, a vida com você é a celebração mais linda. Feliz 26 anos! ❤️; align: center; width: 4; color: #FFFFFF; font: exo2bold;"
+            text="value: Jessica, meu amor, a vida com voce e a celebracao mais linda. Feliz 26 anos! ❤️; align: center; width: 4; color: #FFFFFF; font: exo2bold;"
             position="0 0 0"
           ></a-entity>
-          
-          <!-- Animação de escala (Surgimento Elástico) -->
-          <a-animation 
-            attribute="scale" 
-            from="0.001 0.001 0.001" 
-            to="1.5 1.5 1.5" 
-            dur="2500" 
-            easing="easeOutElastic" 
-            repeat="0"
-          ></a-animation>
         </a-entity>
       </a-marker>
       
-      <!-- ---------------------------------------------------- -->
-      <!-- MARCador 2: KANJI (Coração 3D) -->
-      <!-- ---------------------------------------------------- -->
+      <!-- ================================================= -->
+      <!-- MARCADOR 2: KANJI -->
+      <!-- ================================================= -->
       <a-marker preset="kanji">
-        <!-- 2. Coração 3D (O Ponto Focal) -->
+        <!-- Coração (Aspas corrigidas em animation__pulse e text) -->
         <a-icosahedron 
           position="0 1.5 0" 
           radius="0.8" 
@@ -151,16 +135,12 @@
           material="shader: standard; metalness: 0.8; roughness: 0.1;"
           surprise-interaction
           gesture-handler
-          
-          <!-- Animação de Rotação Contínua -->
           animation="property: rotation; to: 360 360 360; loop: true; dur: 10000; easing: linear;"
-          
-          <!-- Animação de Pulsar (Scale Alternate) -->
-          animation__pulse="property: scale; from="1 1 1" to="1.1 1.1 1.1" dir="alternate" loop="true" dur="1500"
+          animation__pulse="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; dir: alternate; loop: true; dur: 1500;"
         >
-          <!-- Texto Flutuante no Coração -->
+          <!-- Texto -->
           <a-entity
-            text="value: VOCÊ É O MEU PRESENTE. (Clique e Sinta o Amor!); align: center; width="3" color="#FFFFFF" font="exo2bold"
+            text="value: VOCE E O MEU PRESENTE. (Clique e Sinta o Amor!); align: center; width: 3; color: #FFFFFF; font: exo2bold;"
             position="0 0.2 0"
             rotation="0 0 0"
             scale="0.5 0.5 0.5"
@@ -168,11 +148,10 @@
         </a-icosahedron>
       </a-marker>
 
-      <!-- ---------------------------------------------------- -->
-      <!-- MARCador 3: LETTER A (O "Traço" da imagem) -->
-      <!-- ---------------------------------------------------- -->
+      <!-- ================================================= -->
+      <!-- MARCADOR 3: LETTER A -->
+      <!-- ================================================= -->
       <a-marker preset="letterA">
-        <!-- 3. Frase de Conclusão -->
         <a-entity 
           position="0 1.2 0" 
           rotation="-90 0 0" 
@@ -180,46 +159,43 @@
           surprise-interaction
           gesture-handler
         >
-          <!-- Fundo semitransparente -->
+          <!-- Fundo -->
           <a-plane 
-            width="4.5" 
-            height="1.5" 
-            color="#000000" 
-            opacity="0.6" 
-            position="0 0 -0.01"
-            shader="standard"
-            material="metalness: 0.1; roughness: 0.8;"></a-plane>
+            width="4.5" height="1.5" color="#000000" opacity="0.6" 
+            position="0 0 -0.01" shader="standard" material="metalness: 0.1; roughness: 0.8;">
+          </a-plane>
             
-          <!-- Texto da Conclusão -->
+          <!-- Texto -->
           <a-entity
-            text="value: Obrigado por ser a luz, a aventura e o conforto do meu mundo. Que venham muitos anos ao seu lado. Eu te amo, para sempre. ✨; align: center; width="4" color="#EFEF00" font="exo2bold"
+            text="value: Obrigado por ser a luz, a aventura e o conforto do meu mundo. Que venham muitos anos ao seu lado. Eu te amo, para sempre. ✨; align: center; width: 4; color: #EFEF00; font: exo2bold;"
             position="0 0 0"
           ></a-entity>
           
-          <!-- Animação de rotação sutil -->
+          <!-- Animação convertida -->
           <a-animation 
-            attribute="rotation" 
-            to="-90 10 -5" 
-            dir="alternate" 
-            loop="true" 
-            dur="4000"
+             attribute="rotation" to="-90 10 -5" dir="alternate" loop="true" dur="4000"
           ></a-animation>
+          <!-- Correção para sintaxe moderna de animação no elemento pai ou filho se a tag a-animation falhar -->
+           <a-entity animation="property: rotation; to: -90 10 -5; dir: alternate; loop: true; dur: 4000"></a-entity>
         </a-entity>
       </a-marker>
-      
-      <!-- ---------------------------------------------------- -->
-
 
       <a-entity camera></a-entity>
     </a-scene>
 
     <script>
-      // Lógica do Botão de Início (Para habilitar a câmera e o áudio)
+      // Lógica do Botão de Início
       const overlay = document.getElementById('overlay');
       overlay.addEventListener('click', function() {
         overlay.style.display = 'none';
         
-        // Tenta retomar o contexto de áudio (necessário para que a música toque em navegadores modernos)
+        // Tocar música
+        const sound = document.querySelector('#background-music');
+        if(sound && sound.components && sound.components.sound) {
+            sound.components.sound.playSound();
+        }
+
+        // Retomar contexto de áudio
         try {
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           if (AudioContext) {
@@ -227,7 +203,7 @@
             context.resume().then(() => console.log('Audio Context resumed'));
           }
         } catch (e) {
-          console.error("Não foi possível retomar o contexto de áudio:", e);
+          console.error("Audio context error:", e);
         }
       });
     </script>
