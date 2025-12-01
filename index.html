@@ -14,16 +14,13 @@
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0,0,0,0.9); z-index: 9999;
         display: flex; justify-content: center; align-items: center; flex-direction: column;
-        color: white; font-family: 'Segoe UI', sans-serif; text-align: center;
+        color: white; font-family: sans-serif; text-align: center;
       }
       .btn {
         margin-top: 30px; padding: 15px 40px; 
         background: linear-gradient(45deg, #ff33a1, #ff5e62);
         border-radius: 50px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-        box-shadow: 0 4px 15px rgba(255, 51, 161, 0.4);
-        transition: transform 0.2s;
       }
-      .btn:active { transform: scale(0.95); }
     </style>
   </head>
 
@@ -33,21 +30,25 @@
       AFRAME.registerComponent('heart-reveal', {
         init: function () {
           var el = this.el;
-          var textEl = el.querySelector('.hidden-text'); // Procura o texto filho
+          // Procura o elemento de texto que tem a classe .hidden-text dentro deste marcador
+          var textEl = el.parentElement.querySelector('.hidden-text'); 
           
           el.addEventListener('click', function () {
-            // 1. Efeito visual no clique (escala rápida)
+            // 1. Efeito visual no clique do coração
             el.setAttribute('animation__click', {
                 property: 'scale', from: '1.2 1.2 1.2', to: '1.5 1.5 1.5', dur: 150, dir: 'alternate', loop: 2
             });
 
-            // 2. Revelar a mensagem se estiver oculta
-            if (textEl) {
+            // 2. Revelar a mensagem se ela existir e estiver oculta
+            if (textEl && textEl.getAttribute('visible') === false) {
                 textEl.setAttribute('visible', 'true');
                 // Animação de entrada do texto
                 textEl.setAttribute('animation', {
-                    property: 'scale', from: '0 0 0', to: '2 2 2', dur: 1000, easing: 'easeOutElastic'
+                    property: 'scale', from: '0 0 0', to: '1.5 1.5 1.5', dur: 1000, easing: 'easeOutElastic'
                 });
+                // Remove a instrução de clique
+                var instruction = el.parentElement.querySelector('.instruction-text');
+                if(instruction) instruction.setAttribute('visible', 'false');
             }
           });
         }
@@ -56,41 +57,39 @@
     
     <div id="overlay">
       <div style="font-size: 28px; font-weight: bold;">Surpresa para Jessica ❤️</div>
-      <div style="margin-top: 15px; font-size: 16px; color: #ddd; max-width: 80%;">
-        Aponte a câmera para os marcadores <b>HIRO</b> e <b>KANJI</b>.
-      </div>
+      <div style="margin-top: 15px; font-size: 16px; color: #ddd;">Aponte para os marcadores HIRO e KANJI.</div>
       <div class="btn">Toque para começar</div>
     </div>
 
     <a-scene
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
-      renderer="logarithmicDepthBuffer: true; colorManagement: true;"
+      renderer="logarithmicDepthBuffer: true;"
       vr-mode-ui="enabled: false"
       gesture-detector
       id="scene"
     >
+      <a-entity cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
 
       <a-assets>
-        <audio id="music" src="https://cdn.pixabay.com/download/audio/2022/10/25/audio_10673d3284.mp3?filename=piano-moment-11624.mp3" preload="auto"></audio>
+        <audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto"></audio>
       </a-assets>
 
-      <a-sound src="#music" loop="true" volume="0.8" id="background-music"></a-sound>
+      <a-sound src="#music" loop="true" volume="0.6" id="background-music"></a-sound>
 
       <a-marker preset="hiro">
         <a-entity position="0 0.5 0" rotation="-90 0 0" scale="1.5 1.5 1.5">
-            <a-plane width="3.5" height="2" color="#000" opacity="0.7"></a-plane>
+            <a-plane width="3.8" height="2.2" color="#000" opacity="0.7"></a-plane>
             
             <a-entity
                 text="value: Parabens, Jessica!\n\nVoce e a dona do meu coracao...\ne da minha paciencia tambem! (rsrs)\n\nTe amo muito! ❤️; 
-                      align: center; width: 3.2; color: #FFF; shader: msdf; font: https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/exo2/Exo2-Bold.json;"
-                position="0 0 0.1"
+                      align: center; width: 3.5; color: #FFF;"
+                position="0 0 0.2"
             ></a-entity>
         </a-entity>
       </a-marker>
       
-      <a-marker preset="kanji" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-        
+      <a-marker preset="kanji" emitevents="true">
         <a-entity position="0 0.5 0" rotation="0 0 0">
             
             <a-dodecahedron 
@@ -107,13 +106,13 @@
             <a-entity 
                 class="hidden-text"
                 visible="false"
-                text="value: FELIZ ANIVERSARIO\nMEU AMOR!; align: center; width: 4; color: #ffeb3b; font: https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/exo2/Exo2-Black.json; shader: msdf;"
+                text="value: FELIZ ANIVERSARIO\nMEU AMOR!; align: center; width: 4; color: #ffeb3b;"
                 position="0 1.2 0"
                 rotation="-90 0 0"
                 scale="0 0 0" 
             ></a-entity>
             
-            <a-text value="(Toque no coracao)" align="center" width="2" position="0 -0.8 0" rotation="-90 0 0" color="#ccc"></a-text>
+            <a-text class="instruction-text" value="(Toque no coracao)" align="center" width="2" position="0 -0.8 0" rotation="-90 0 0" color="#ccc"></a-text>
 
         </a-entity>
       </a-marker>
@@ -122,13 +121,11 @@
     </a-scene>
 
     <script>
-      // Script para iniciar áudio e remover overlay
       const overlay = document.getElementById('overlay');
       overlay.addEventListener('click', function() {
         overlay.style.display = 'none';
-        
         const sound = document.querySelector('#background-music');
-        if(sound) {
+        if(sound && sound.components.sound) {
             sound.components.sound.playSound();
         }
       });
