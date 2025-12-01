@@ -5,10 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     
-    <!-- Bibliotecas AR (AR.js e A-Frame) -->
+    <!-- Bibliotecas AR (ATUALIZADAS para links mais estáveis) -->
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="https://raw.githack.com/fcor/arjs-gestures/master/dist/gestures.js"></script>
+    <!-- AR.js do CDN (Mais Estável que raw.githack) -->
+    <script src="https://cdn.jsdelivr.net/npm/ar.js@2.1.0/aframe/build/aframe-ar.js"></script>
+    <!-- Gesture Handler (Atualizado para CDN) -->
+    <script src="https://cdn.jsdelivr.net/gh/fcor/arjs-gestures@master/dist/gestures.js"></script>
 
     <style>
       /* Estilos para a tela inicial (overlay) */
@@ -74,7 +76,7 @@
     <!-- Tela de Início (overlay) -->
     <div id="overlay">
       <div style="font-size: 32px; font-weight: bold;">Surpresa AR de Aniversário!</div>
-      <div style="margin-top: 20px; font-size: 18px; color: #ccc;">Encontre os 3 marcadores (Hiro, A, B) para a mensagem completa.</div>
+      <div style="margin-top: 20px; font-size: 18px; color: #ccc;">Encontre os 3 Marcadores (Hiro, Kanji, Letter A) para a mensagem completa!</div>
       <div class="btn">TOQUE PARA INICIAR O AMOR</div>
     </div>
 
@@ -97,8 +99,12 @@
       <!-- Toca a música após o clique no overlay (se a URL for válida) -->
       <a-sound src="#music" autoplay="true" loop="true" volume="0.5" id="background-music"></a-sound>
 
-      <!-- 1. MARCador HIRO: Frase de Abertura (Com Fundo e Animação Elástica) -->
+      <!-- ---------------------------------------------------- -->
+      <!-- MARCador 1: HIRO (Frase de Abertura) -->
+      <!-- ---------------------------------------------------- -->
       <a-marker preset="hiro">
+      
+        <!-- 1. Frase de Abertura (Com Animação Elástica) -->
         <a-entity 
           position="0 1.2 0" 
           rotation="-90 0 0" 
@@ -118,7 +124,7 @@
             
           <!-- Texto da Abertura -->
           <a-entity
-            text="value: Jessica, meu amor, a vida com você é a celebração mais linda. Feliz 26 anos! Este é o primeiro passo da nossa surpresa. ❤️; align: center; width: 4; color: #FFFFFF; font: exo2bold;"
+            text="value: Jessica, meu amor, a vida com você é a celebração mais linda. Feliz 26 anos! ❤️; align: center; width: 4; color: #FFFFFF; font: exo2bold;"
             position="0 0 0"
           ></a-entity>
           
@@ -133,9 +139,12 @@
           ></a-animation>
         </a-entity>
       </a-marker>
-
-      <!-- 2. MARCADOR A: Coração 3D (O Ponto Focal) -->
-      <a-marker preset="letterA">
+      
+      <!-- ---------------------------------------------------- -->
+      <!-- MARCador 2: KANJI (Coração 3D) -->
+      <!-- ---------------------------------------------------- -->
+      <a-marker preset="kanji">
+        <!-- 2. Coração 3D (O Ponto Focal) -->
         <a-icosahedron 
           position="0 1.5 0" 
           radius="0.8" 
@@ -160,8 +169,11 @@
         </a-icosahedron>
       </a-marker>
 
-      <!-- 3. MARCADOR B: Frase de Conclusão (Com Fundo e Animação de Rotação) -->
-      <a-marker preset="letterB">
+      <!-- ---------------------------------------------------- -->
+      <!-- MARCador 3: LETTER A (O "Traço" da imagem) -->
+      <!-- ---------------------------------------------------- -->
+      <a-marker preset="letterA">
+        <!-- 3. Frase de Conclusão -->
         <a-entity 
           position="0 1.2 0" 
           rotation="-90 0 0" 
@@ -181,7 +193,7 @@
             
           <!-- Texto da Conclusão -->
           <a-entity
-            text="value: Obrigado por ser a luz, a aventura e o conforto do meu mundo. Que venham mais 26 anos ao seu lado. Eu te amo, para sempre. ✨; align: center; width: 4; color: #EFEF00; font: exo2bold;"
+            text="value: Obrigado por ser a luz, a aventura e o conforto do meu mundo. Que venham muitos anos ao seu lado. Eu te amo, para sempre. ✨; align: center; width: 4; color: #EFEF00; font: exo2bold;"
             position="0 0 0"
           ></a-entity>
           
@@ -195,6 +207,9 @@
           ></a-animation>
         </a-entity>
       </a-marker>
+      
+      <!-- ---------------------------------------------------- -->
+
 
       <a-entity camera></a-entity>
     </a-scene>
