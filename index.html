@@ -1,134 +1,48 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Feliz Aniversário, Jessica! - AR Love</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <title>Feliz Aniversário - AR</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="https://raw.githack.com/fcor/arjs-gestures/master/dist/gestures.js"></script>
-
+    
     <style>
-      #overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.9); z-index: 9999;
-        display: flex; justify-content: center; align-items: center; flex-direction: column;
-        color: white; font-family: sans-serif; text-align: center;
-      }
-      .btn {
-        margin-top: 30px; padding: 15px 40px; 
-        background: linear-gradient(45deg, #ff33a1, #ff5e62);
-        border-radius: 50px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+      /* Botão para iniciar (necessário para liberar som e video no iOS/Android) */
+      .start-btn {
+        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+        padding: 15px 30px; background: #ff0055; color: white;
+        border: none; border-radius: 30px; font-size: 18px; z-index: 99999;
+        font-family: sans-serif; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
       }
     </style>
   </head>
 
-  <body style="margin: 0; overflow: hidden;">
+  <body style="margin : 0px; overflow: hidden;">
     
-    <script>
-      AFRAME.registerComponent('heart-reveal', {
-        init: function () {
-          var el = this.el;
-          // Procura o elemento de texto que tem a classe .hidden-text dentro deste marcador
-          var textEl = el.parentElement.querySelector('.hidden-text'); 
-          
-          el.addEventListener('click', function () {
-            // 1. Efeito visual no clique do coração
-            el.setAttribute('animation__click', {
-                property: 'scale', from: '1.2 1.2 1.2', to: '1.5 1.5 1.5', dur: 150, dir: 'alternate', loop: 2
-            });
+    <button class="start-btn" onclick="this.style.display='none'">TOQUE AQUI PARA INICIAR</button>
 
-            // 2. Revelar a mensagem se ela existir e estiver oculta
-            if (textEl && textEl.getAttribute('visible') === false) {
-                textEl.setAttribute('visible', 'true');
-                // Animação de entrada do texto
-                textEl.setAttribute('animation', {
-                    property: 'scale', from: '0 0 0', to: '1.5 1.5 1.5', dur: 1000, easing: 'easeOutElastic'
-                });
-                // Remove a instrução de clique
-                var instruction = el.parentElement.querySelector('.instruction-text');
-                if(instruction) instruction.setAttribute('visible', 'false');
-            }
-          });
-        }
-      });
-    </script>
-    
-    <div id="overlay">
-      <div style="font-size: 28px; font-weight: bold;">Surpresa para Jessica ❤️</div>
-      <div style="margin-top: 15px; font-size: 16px; color: #ddd;">Aponte para os marcadores HIRO e KANJI.</div>
-      <div class="btn">Toque para começar</div>
-    </div>
-
-    <a-scene
-      embedded
-      arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
-      renderer="logarithmicDepthBuffer: true;"
-      vr-mode-ui="enabled: false"
-      gesture-detector
-      id="scene"
-    >
-      <a-entity cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
-
-      <a-assets>
-        <audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto"></audio>
-      </a-assets>
-
-      <a-sound src="#music" loop="true" volume="0.6" id="background-music"></a-sound>
-
-      <a-marker preset="hiro">
-        <a-entity position="0 0.5 0" rotation="-90 0 0" scale="1.5 1.5 1.5">
-            <a-plane width="3.8" height="2.2" color="#000" opacity="0.7"></a-plane>
-            
-            <a-entity
-                text="value: Parabens, Jessica!\n\nVoce e a dona do meu coracao...\ne da minha paciencia tambem! (rsrs)\n\nTe amo muito! ❤️; 
-                      align: center; width: 3.5; color: #FFF;"
-                position="0 0 0.2"
-            ></a-entity>
-        </a-entity>
-      </a-marker>
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
       
-      <a-marker preset="kanji" emitevents="true">
-        <a-entity position="0 0.5 0" rotation="0 0 0">
-            
-            <a-dodecahedron 
-                class="clickable"
-                color="#ff0044" 
-                radius="0.5"
-                material="metalness: 0.6; roughness: 0.2;"
-                heart-reveal
-                animation="property: scale; from: 1 1 1; to: 1.15 1.15 1.15; dir: alternate; dur: 800; loop: true; easing: easeInOutSine"
-                animation__rot="property: rotation; to: 0 360 0; dur: 10000; loop: true; easing: linear"
-            >
+      <a-marker preset="hiro">
+          <a-box position="0 0 0" scale="1 0.1 1" material="opacity: 0.1; color: red;"></a-box>
+          
+          <a-entity position="0 0.5 0" rotation="-90 0 0" scale="2 2 2">
+            <a-plane width="3" height="1.5" color="black" opacity="0.7"></a-plane>
+            <a-text value="Feliz Aniversario\nJessica!" align="center" color="white" width="5" position="0 0 0.1"></a-text>
+            <a-text value="Voce e o meu amor!" align="center" color="yellow" width="4" position="0 -0.5 0.1"></a-text>
+          </a-entity>
+      </a-marker>
+
+      <a-marker preset="kanji">
+          <a-entity position="0 0.5 0" rotation="0 0 0">
+            <a-dodecahedron color="#ff0055" radius="0.5"
+              animation="property: scale; to: 1.2 1.2 1.2; dir: alternate; loop: true; dur: 800">
             </a-dodecahedron>
-
-            <a-entity 
-                class="hidden-text"
-                visible="false"
-                text="value: FELIZ ANIVERSARIO\nMEU AMOR!; align: center; width: 4; color: #ffeb3b;"
-                position="0 1.2 0"
-                rotation="-90 0 0"
-                scale="0 0 0" 
-            ></a-entity>
             
-            <a-text class="instruction-text" value="(Toque no coracao)" align="center" width="2" position="0 -0.8 0" rotation="-90 0 0" color="#ccc"></a-text>
-
-        </a-entity>
+            <a-text value="TE AMO" align="center" color="white" width="6" position="0 1.2 0" rotation="-90 0 0"></a-text>
+          </a-entity>
       </a-marker>
 
       <a-entity camera></a-entity>
     </a-scene>
-
-    <script>
-      const overlay = document.getElementById('overlay');
-      overlay.addEventListener('click', function() {
-        overlay.style.display = 'none';
-        const sound = document.querySelector('#background-music');
-        if(sound && sound.components.sound) {
-            sound.components.sound.playSound();
-        }
-      });
-    </script>
   </body>
 </html>
